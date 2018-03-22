@@ -22,9 +22,9 @@ class Onebox::Engine::TwitchStreamOnebox
 	def to_html
 		html = [];
 		html.push("<div class=\"fa_container\" >");
-		doc = Nokogiri::HTML(open(@url));
-		doc.remove_namespaces!
 		begin
+			doc = Nokogiri::HTML(open(@url));
+			doc.remove_namespaces!
 			title = doc.css("title")[0].text;
 			downloadLinks = doc.xpath("//a[contains(text(), 'Download')]");
 			#submissionAuthor = doc.css("...");
