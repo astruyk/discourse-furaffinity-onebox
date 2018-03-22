@@ -29,7 +29,7 @@ class Onebox::Engine::TwitchStreamOnebox
 		html = [];
 		html.push("<div class=\"fa_container\" >");
 		#html.push(title);
-		html.push("<a href=\"#{@url}\">");
+		html.push("<a href=\"#{submissionUrl}\">");
 		html.push("<img src=\"#{submissionUrl}\" />");
 		html.push("</a>");
 		html.push("</div>");
