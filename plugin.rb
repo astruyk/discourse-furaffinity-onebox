@@ -5,7 +5,7 @@
 # url: https://github.com/tfProxy/discourse-furaffinity-onebox
 
 # Register stylesheet for our custom classes
-register_asset "style.css"
+register_asset "styles.css"
 
 # Onebox for Furaffinity submissions.
 class Onebox::Engine::TwitchStreamOnebox
