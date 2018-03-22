@@ -25,7 +25,7 @@ class Onebox::Engine::TwitchStreamOnebox
 		doc = Nokogiri::HTML(open(@url));
 		begin
 			title = doc.css("title")[0].text;
-			submissionUrl = doc.xpath("//a[contains(text(), 'Download')]")[0]["href"];
+			submissionUrl = doc.xpath("//a[contains(text(), 'Download')]");
 			#submissionAuthor = doc.css("...");
 			#submissionTitle = doc.css("...")
 			html.push(title);
