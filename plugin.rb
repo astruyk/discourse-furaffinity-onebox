@@ -43,7 +43,11 @@ class Onebox::Engine::TwitchStreamOnebox
 				html.push("<a href=\"#{@url}\">#{@url}</a>");
 			else
 				downloadLink = downloadLinks[0]["href"];
-				html.push("URL: #{downloadLink}");
+				html.push("<a href=\"#{@url}\">");
+				html.push("<img src=\"#{downloadLink}\" />");
+				html.push("</a>");
+				html.push("<br />");
+				html.push("<span>XXX by yyy</span>");
 			end
 			
 			#html.push("<a href=\"#{submissionUrl}\">");
