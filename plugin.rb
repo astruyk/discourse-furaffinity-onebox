@@ -23,19 +23,26 @@ class Onebox::Engine::TwitchStreamOnebox
 		html = [];
 		html.push("<div class=\"fa_container\" >");
 		doc = Nokogiri::HTML(open(@url));
+		doc.remove_namespaces!
 		begin
 			title = doc.css("title")[0].text;
 			downloadLinks = doc.xpath("//a[contains(text(), 'Download')]");
 			#submissionAuthor = doc.css("...");
 			#submissionTitle = doc.css("...")
 			html.push(title);
+			html.push(@url);
 			html.push("<br/>");
-			if downloadLinks.any?
-				downloadLink = downloadLinks[0]["href"];
-				html.push("URL: #{downloadLink}");
+			if downloadLinks.nil?
+				html.push("Null xpath result.");
 			else
-				html.push("No Download Links Found. -- #{@url}");
+				if downloadLinks.any?
+					downloadLink = downloadLinks[0]["href"];
+					html.push("URL: #{downloadLink}");
+				else
+					html.push("No Download Links Found. -- #{@url}");
+				end
 			end
+			
 			#html.push("<a href=\"#{submissionUrl}\">");
 			#html.push("<img src=\"#{submissionUrl}\" />");
 			#html.push("<br/>");
