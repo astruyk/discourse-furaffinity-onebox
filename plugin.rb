@@ -4,6 +4,9 @@
 # authors: tfProxy
 # url: https://github.com/tfProxy/discourse-furaffinity-onebox
 
+# Register stylesheet for our custom classes
+register_asset "style.css"
+
 # Onebox for Furaffinity submissions.
 class Onebox::Engine::TwitchStreamOnebox
 	include Onebox::Engine
@@ -20,7 +23,7 @@ class Onebox::Engine::TwitchStreamOnebox
 		doc = Nokogiri::HTML(open(@url));
 		title = doc.css("title")[0].text;
 		html = [];
-		html.push("<div>");
+		html.push("<div class=\"fa_container\" >");
 		html.push(title);
 		html.push("</div>");
 		html.join('');
