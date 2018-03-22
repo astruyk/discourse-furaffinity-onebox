@@ -26,9 +26,9 @@ class Onebox::Engine::TwitchStreamOnebox
 			doc = Nokogiri::HTML(open(@url));
 			doc.remove_namespaces!;
 
-			titleElements = doc.css("meta[property='twitter:title']");
-			descriptionElements = doc.css("meta[property='twitter:description']");
-			imageElements = doc.css("meta[property='twitter:image']");
+			titleElements = doc.css("meta[name='twitter:title']");
+			descriptionElements = doc.css("meta[name='twitter:description']");
+			imageElements = doc.css("meta[name='twitter:image']");
 
 			if !titleElements.blank?
 				# Most pages (even the NSFW blocked ones) will have this. If not, we're not on a FA page we can do anything
