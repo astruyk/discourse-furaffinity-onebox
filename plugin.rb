@@ -25,39 +25,34 @@ class Onebox::Engine::TwitchStreamOnebox
 		begin
 			doc = Nokogiri::HTML(open(@url));
 			doc.remove_namespaces!
-			title = doc.css("title")[0].text;
-			downloadLinks = doc.xpath("//a[contains(text(), 'Download')]");
-			#submissionAuthor = doc.css("...");
-			#submissionTitle = doc.css("...")
-			html.push(title);
-			html.push("<br/>");
-			html.push(@url);
-			html.push("<br/>");
-			html.push(downloadLinks.to_s);
-			html.push("<br/>");
-			html.push("<br/>");
-			if downloadLinks.blank?
-				html.push("Failed to extract image from submission, so here's the link instead.");
+			titleElement = doc.css("meta[property='twitter:title']")
+			descriptionElement = doc.css("meta[property='twitter:description']");
+			imageElement = doc.css("meta[property='twitter:image']");
+
+			if !titleElement.nil?
+				# Most pages (even the NSFW blocked ones) will have this. If not, we're not on a FA page we can do anything
+				# useful with.
+				title = titleElement["content"];
+				html.push("<a class=\"fa_title\" href=\"#{@url}\">#{title}</a>");
 				html.push("<br/>");
-				html.push("<br/>");
-				html.push("<a href=\"#{@url}\">#{@url}</a>");
+
+				if !imageElement.nil?
+					imageUrl = imageElement["content"];
+					html.push("<a href=\"#{@url}\"><img src=\"#{imageUrl}\" /></a>");
+					html.push("<br/>");
+				end
+
+				if !descriptionElement.nil?
+					description = descriptionElement["content"];
+					html.push("<p class=\"fa_description\">#{description}</p>");
+				end
 			else
-				downloadLink = downloadLinks[0]["href"];
-				html.push("<a href=\"#{@url}\">");
-				html.push("<img src=\"#{downloadLink}\" />");
-				html.push("</a>");
-				html.push("<br />");
-				html.push("<span>XXX by yyy</span>");
+				# We can't do anything useful here. Just bail and let someone else try.
+				return nil;
 			end
-			
-			#html.push("<a href=\"#{submissionUrl}\">");
-			#html.push("<img src=\"#{submissionUrl}\" />");
-			#html.push("<br/>");
-			#html.push(submissionUrl);
-			#html.push("</a>");
 		rescue StandardError => error
 			html.push(error.message);
-			html.push("<br/>");
+			html.push("<br/><br/>");
 			html.push(error.backtrace);
 		end
 		html.push("</div>");
