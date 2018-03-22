@@ -24,8 +24,9 @@ class Onebox::Engine::TwitchStreamOnebox
 		html.push("<div class=\"fa_container\" >");
 		begin
 			doc = Nokogiri::HTML(open(@url));
-			doc.remove_namespaces!
-			titleElements = doc.css("meta[property='twitter:title']")
+			doc.remove_namespaces!;
+
+			titleElements = doc.css("meta[property='twitter:title']");
 			descriptionElements = doc.css("meta[property='twitter:description']");
 			imageElements = doc.css("meta[property='twitter:image']");
 
