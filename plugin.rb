@@ -31,7 +31,7 @@ class Onebox::Engine::TwitchStreamOnebox
 			html.push(title);
 			html.push("<br/>");
 			if downloadLinks.any?
-				downloadLink = downloadLinks[0];
+				downloadLink = downloadLinks[0]["href"];
 				html.push("URL: #{downloadLink}");
 			else
 				html.push("No Download Links Found. -- #{@url}");
