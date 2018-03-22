@@ -34,8 +34,14 @@ class Onebox::Engine::TwitchStreamOnebox
 			html.push("<br/>");
 			html.push(@url);
 			html.push("<br/>");
+			html.push(downloadLinks.to_s);
+			html.push("<br/>");
+			html.push("<br/>");
 			if downloadLinks.blank?
-				html.push("Furaffinity: <a href=\"#{@url}\">#{@url}</a>");
+				html.push("Failed to extract image from submission, so here's the link instead.");
+				html.push("<br/>");
+				html.push("<br/>");
+				html.push("<a href=\"#{@url}\">#{@url}</a>");
 			else
 				downloadLink = downloadLinks[0]["href"];
 				html.push("URL: #{downloadLink}");
