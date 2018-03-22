@@ -20,26 +20,31 @@ class Onebox::Engine::TwitchStreamOnebox
 	end
 	
 	def to_html
-		doc = Nokogiri::HTML(open(@url));
-		title = doc.css("title")[0].text;
-		submissionUrl = doc.css("a:contains('Download')[href]")[0]["href"];
-		#submissionAuthor = doc.css("...");
-		#submissionTitle = doc.css("...")
-
 		html = [];
 		html.push("<div class=\"fa_container\" >");
-		html.push(title);
-		html.push("<br/>");
-		if submissionUrl
-			html.push("URL: #{submissionUrl}");
-		else
-			html.push("No URL");
+		doc = Nokogiri::HTML(open(@url));
+		begin
+			title = doc.css("title")[0].text;
+			submissionUrl = doc.css("a:contains('Download')[href]")[0]["href"];
+			#submissionAuthor = doc.css("...");
+			#submissionTitle = doc.css("...")
+			html.push(title);
+			html.push("<br/>");
+			if submissionUrl
+				html.push("URL: #{submissionUrl}");
+			else
+				html.push("No URL");
+			end
+			#html.push("<a href=\"#{submissionUrl}\">");
+			#html.push("<img src=\"#{submissionUrl}\" />");
+			#html.push("<br/>");
+			#html.push(submissionUrl);
+			#html.push("</a>");
+		rescue StandardError => error
+			html.push(error.message);
+			html.push("<br/>");
+			html.push(error.backtrace);
 		end
-		#html.push("<a href=\"#{submissionUrl}\">");
-		#html.push("<img src=\"#{submissionUrl}\" />");
-		#html.push("<br/>");
-		#html.push(submissionUrl);
-		#html.push("</a>");
 		html.push("</div>");
 		html.join('');
 	end
