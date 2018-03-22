@@ -13,10 +13,17 @@ hooks:
           - git clone https://github.com/discourse/docker_manager.git
           - git clone https://github.com/astruyk/discourse-furaffinity-onebox.git
 ```
+
 * Rebuild the webpage
 ```
 cd /var/discourse
 ./launcher rebuild app
+```
+
+* (optional) Rebuild the existing posts so that existing posts will use the new OneBox:
+```
+./launcher enter app
+rake posts:rebake
 ```
 
 That's it!
