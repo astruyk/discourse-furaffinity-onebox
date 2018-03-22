@@ -30,17 +30,14 @@ class Onebox::Engine::TwitchStreamOnebox
 			#submissionAuthor = doc.css("...");
 			#submissionTitle = doc.css("...")
 			html.push(title);
+			html.push("<br/>");
 			html.push(@url);
 			html.push("<br/>");
-			if downloadLinks.nil?
-				html.push("Null xpath result.");
+			if downloadLinks.blank?
+				downloadLink = downloadLinks[0]["href"];
+				html.push("URL: #{downloadLink}");
 			else
-				if downloadLinks.any?
-					downloadLink = downloadLinks[0]["href"];
-					html.push("URL: #{downloadLink}");
-				else
-					html.push("No Download Links Found. -- #{@url}");
-				end
+				html.push("Furaffinity: <a href=\"#{@url}\">#{@url}</a>");
 			end
 			
 			#html.push("<a href=\"#{submissionUrl}\">");
