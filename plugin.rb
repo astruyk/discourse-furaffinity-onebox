@@ -31,6 +31,8 @@ class Onebox::Engine::TwitchStreamOnebox
 		#html.push(title);
 		html.push("<a href=\"#{submissionUrl}\">");
 		html.push("<img src=\"#{submissionUrl}\" />");
+		html.push("<br/>");
+		html.push(submissionUrl);
 		html.push("</a>");
 		html.push("</div>");
 		html.join('');
