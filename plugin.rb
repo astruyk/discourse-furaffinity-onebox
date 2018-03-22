@@ -25,25 +25,25 @@ class Onebox::Engine::TwitchStreamOnebox
 		begin
 			doc = Nokogiri::HTML(open(@url));
 			doc.remove_namespaces!
-			titleElement = doc.css("meta[property='twitter:title']")
-			descriptionElement = doc.css("meta[property='twitter:description']");
-			imageElement = doc.css("meta[property='twitter:image']");
+			titleElements = doc.css("meta[property='twitter:title']")
+			descriptionElements = doc.css("meta[property='twitter:description']");
+			imageElements = doc.css("meta[property='twitter:image']");
 
-			if !titleElement.nil?
+			if !titleElements.blank?
 				# Most pages (even the NSFW blocked ones) will have this. If not, we're not on a FA page we can do anything
 				# useful with.
-				title = titleElement["content"];
+				title = titleElements[0]["content"];
 				html.push("<a class=\"fa_title\" href=\"#{@url}\">#{title}</a>");
 				html.push("<br/>");
 
-				if !imageElement.nil?
-					imageUrl = imageElement["content"];
+				if !imageElements.blank?
+					imageUrl = imageElements[0]["content"];
 					html.push("<a href=\"#{@url}\"><img src=\"#{imageUrl}\" /></a>");
 					html.push("<br/>");
 				end
 
-				if !descriptionElement.nil?
-					description = descriptionElement["content"];
+				if !descriptionElements.blank?
+					description = descriptionElements[0]["content"];
 					html.push("<p class=\"fa_description\">#{description}</p>");
 				end
 			else
