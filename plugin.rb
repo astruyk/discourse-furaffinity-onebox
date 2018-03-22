@@ -48,7 +48,7 @@ class Onebox::Engine::TwitchStreamOnebox
 				end
 			else
 				# We can't do anything useful here. Just bail and let someone else try.
-				return nil;
+				html.push("<a class=\"fa_title\" href=\"#{@url}\">#{@url}</a>");
 			end
 		rescue StandardError => error
 			html.push(error.message);
