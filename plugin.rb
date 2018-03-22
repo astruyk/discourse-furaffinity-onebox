@@ -34,10 +34,10 @@ class Onebox::Engine::TwitchStreamOnebox
 			html.push(@url);
 			html.push("<br/>");
 			if downloadLinks.blank?
+				html.push("Furaffinity: <a href=\"#{@url}\">#{@url}</a>");
+			else
 				downloadLink = downloadLinks[0]["href"];
 				html.push("URL: #{downloadLink}");
-			else
-				html.push("Furaffinity: <a href=\"#{@url}\">#{@url}</a>");
 			end
 			
 			#html.push("<a href=\"#{submissionUrl}\">");
