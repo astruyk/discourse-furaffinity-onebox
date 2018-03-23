@@ -1,9 +1,11 @@
 .fa_container {
-	padding: 3px;
+	padding: 1em;
 	border-style: solid;
-	border: 3px;
+	border-width: 1px;
 	border-color: #919bad;
 	background-color: #d4dce8;
+	border-radius: 1em;
+
 }
 
 .fa_title {
@@ -11,6 +13,7 @@
 	text-decoration: underline;
 	text-align: center;
 	margin-bottom: 1em;
+	color: rgb(65, 82, 107);
 }
 
 .fa_image {
@@ -27,8 +30,13 @@
 .fa_description {
 	margin-left: auto;
 	margin-right: auto;
-	margin-top: 1em;
+	margin-top: 0.5em;
 	width: 75%;
+	background-color: white;
+	border-style: solid;
+	border-color: #919bad;
+	border-width: 1px;
+	border-radius: 5px;
 }
 
 .fa_nsfw_warning {

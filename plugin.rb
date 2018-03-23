@@ -30,8 +30,9 @@ class Onebox::Engine::TwitchStreamOnebox
 			# useful with and we can just bail.
 			if !titleElements.blank?
 				title = titleElements[0]["content"];
-				html.push("<div class=\"fa_title\">")
 				html.push("<a href=\"#{@url}\">#{title}</a>");
+				html.push("<div class=\"fa_title\">")
+				html.push(title);
 				html.push("</div>");
 
 				# Note: The name in this URL has to match the name declared at the
@@ -57,6 +58,7 @@ class Onebox::Engine::TwitchStreamOnebox
 					html.push(description);
 					html.push("</div>");
 				end
+				html.push("</a>");
 			else
 				# Bail! Nothing we can do. Maybe someone else can generate something useful for this.
 				return;
