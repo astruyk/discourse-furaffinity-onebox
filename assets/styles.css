@@ -5,3 +5,18 @@
 	border-color: #919bad;
 	background-color: #d4dce8;
 }
+
+.fa_title {
+	font-weight: bold;
+}
+
+.fa_image {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.fa_description {
+	margin-left: auto;
+	margin-right: auto;
+	width: 75%;
+}
