@@ -1,10 +1,9 @@
-# name: Discourse FurAffinity Onebox
+# name: discourse-furaffinity-onebox
 # about: Adds support for properly embedding Furaffinity submissions as OneBox items in Discourse
 # version: 1.0
 # authors: tfProxy
 # url: https://github.com/tfProxy/discourse-furaffinity-onebox
 
-# Register stylesheet for our custom classes
 register_asset "styles.css"
 
 # Onebox for Furaffinity submissions.
@@ -14,10 +13,6 @@ class Onebox::Engine::TwitchStreamOnebox
 	# Example submission URL is https://www.furaffinity.net/view/10235836/
 	REGEX = /^https?:\/\/(?:www\.)?furaffinity\.net\/view\/([0-9]{4,25})(?:\/)?$/
 	matches_regexp REGEX
-
-	def submissionId
-		@url.match(REGEX)[1]
-	end
 	
 	def to_html
 		html = [];
@@ -30,26 +25,34 @@ class Onebox::Engine::TwitchStreamOnebox
 			descriptionElements = doc.css("meta[name='twitter:description']");
 			imageElements = doc.css("meta[name='twitter:image']");
 
+			# Most pages (even the NSFW blocked ones) will have this.
+			# If not, we're not on a FA page we can do anything
+			# useful with and we can just bail.
 			if !titleElements.blank?
-				# Most pages (even the NSFW blocked ones) will have this. If not, we're not on a FA page we can do anything
-				# useful with.
 				title = titleElements[0]["content"];
-				html.push("<a class=\"fa_title\" href=\"#{@url}\">#{title}</a>");
-				html.push("<br/>");
+				html.push("<div class=\"fa_title\">")
+				html.push("<a href=\"#{@url}\">#{title}</a>");
+				html.push("</div>");
 
+				# Note: The name in this URL has to match the name declared at the
+				# top of this file.
+				imageUrl = "/plugins/discourse-furaffinity-onebox/images/fa-logo.png";
 				if !imageElements.blank?
 					imageUrl = imageElements[0]["content"];
-					html.push("<a href=\"#{@url}\"><img src=\"#{imageUrl}\" /></a>");
-					html.push("<br/>");
 				end
+				html.push("<div class=\"fa_image\">")
+				html.push("<a href=\"#{@url}\"><img src=\"#{imageUrl}\" /></a>");
+				html.push("</div>");
 
 				if !descriptionElements.blank?
 					description = descriptionElements[0]["content"];
-					html.push("<p class=\"fa_description\">#{description}</p>");
+					html.push("<div class=\"fa_description\">")
+					html.push("<p>#{description}</p>");
+					html.push("</div>");
 				end
 			else
-				# We can't do anything useful here. Just bail and let someone else try.
-				html.push("<a class=\"fa_title\" href=\"#{@url}\">#{@url}</a>");
+				# Bail! Nothing we can do. Maybe someone else can generate something useful for this.
+				return;
 			end
 		rescue StandardError => error
 			html.push(error.message);
