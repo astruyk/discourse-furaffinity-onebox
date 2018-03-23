@@ -37,26 +37,24 @@ class Onebox::Engine::TwitchStreamOnebox
 				# Note: The name in this URL has to match the name declared at the
 				# top of this file.
 				imageUrl = "/plugins/discourse-furaffinity-onebox/images/fa_logo.png";
-
-				# If we have a better URL for the image, it must be SFW. Use it.
 				if !imageElements.blank?
+					# If we have a better URL for the image, it must be SFW. Use it.
 					imageUrl = imageElements[0]["content"];
 				end
 				html.push("<div class=\"fa_image\">")
 				html.push("<a href=\"#{@url}\"><img src=\"#{imageUrl}\" /></a>");
 				html.push("</div>");
 
+				if imageElements.blank?
+					html.push("<div class=\"fa_nsfw_warning\">");
+					html.push("(The image preview could not be retrieved, most likely because it is adult-only)");
+					html.push("</div>");
+				end
+
 				if !descriptionElements.blank?
 					description = descriptionElements[0]["content"];
 					html.push("<div class=\"fa_description\">");
 					html.push(description);
-					html.push("</div>");
-				end
-
-				if imageElements.blank?
-					# Assuming the image is NSFW here...
-					html.push("<div class=\"fa_nsfw_warning\">");
-					html.push("(The image preview could not be retrieved, most likely because it is adult-only)");
 					html.push("</div>");
 				end
 			else
