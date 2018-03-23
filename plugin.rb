@@ -53,7 +53,7 @@ class Onebox::Engine::TwitchStreamOnebox
 					html.push("</div>");
 				end
 
-				if imageElements.blank
+				if imageElements.blank?
 					# Assuming the image is NSFW here...
 					html.push("<div class=\"fa_nsfw_warning\">");
 					html.push("(The image preview could not be retrieved, most likely because it is adult-only)");
