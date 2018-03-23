@@ -5,7 +5,6 @@
 	border-color: #919bad;
 	background-color: #d4dce8;
 	border-radius: 1em;
-
 }
 
 .fa_title {
@@ -31,12 +30,14 @@
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 0.5em;
-	width: 75%;
+	width: 90%;
 	background-color: white;
 	border-style: solid;
 	border-color: #919bad;
 	border-width: 1px;
 	border-radius: 5px;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
 }
 
 .fa_nsfw_warning {
