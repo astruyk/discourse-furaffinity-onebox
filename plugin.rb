@@ -30,7 +30,6 @@ class Onebox::Engine::TwitchStreamOnebox
 			# useful with and we can just bail.
 			if !titleElements.blank?
 				title = titleElements[0]["content"];
-				html.push("<a href=\"#{@url}\">#{title}</a>");
 				html.push("<div class=\"fa_title\">")
 				html.push(title);
 				html.push("</div>");
@@ -43,7 +42,7 @@ class Onebox::Engine::TwitchStreamOnebox
 					imageUrl = imageElements[0]["content"];
 				end
 				html.push("<div class=\"fa_image\">")
-				html.push("<a href=\"#{@url}\"><img src=\"#{imageUrl}\" /></a>");
+				html.push("<img src=\"#{imageUrl}\" />");
 				html.push("</div>");
 
 				if !descriptionElements.blank?
