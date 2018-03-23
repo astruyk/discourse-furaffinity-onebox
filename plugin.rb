@@ -1,8 +1,8 @@
 # name: discourse-furaffinity-onebox
 # about: Adds support for properly embedding Furaffinity submissions as OneBox items in Discourse
 # version: 1.0
-# authors: tfProxy
-# url: https://github.com/tfProxy/discourse-furaffinity-onebox
+# authors: Anton Struyk
+# url: https://github.com/astruyk/discourse-furaffinity-onebox
 
 register_asset "styles.css"
 
@@ -46,18 +46,19 @@ class Onebox::Engine::TwitchStreamOnebox
 				html.push("<a href=\"#{@url}\"><img src=\"#{imageUrl}\" /></a>");
 				html.push("</div>");
 
-				if imageElements.blank?
-					html.push("<div class=\"fa_nsfw_warning\">");
-					html.push("(The image preview could not be retrieved, most likely because it is adult-only)");
-					html.push("</div>");
-				end
-
 				if !descriptionElements.blank?
 					description = descriptionElements[0]["content"];
 					html.push("<div class=\"fa_description\">");
 					html.push(description);
 					html.push("</div>");
 				end
+
+				if imageElements.blank?
+					html.push("<div class=\"fa_nsfw_warning\">");
+					html.push("(The image preview could not be retrieved, most likely because it is adult-only)");
+					html.push("</div>");
+				end
+
 				html.push("</a>");
 			else
 				# Bail! Nothing we can do. Maybe someone else can generate something useful for this.
