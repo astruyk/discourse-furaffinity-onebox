@@ -36,7 +36,7 @@ class Onebox::Engine::TwitchStreamOnebox
 
 				# Note: The name in this URL has to match the name declared at the
 				# top of this file.
-				imageUrl = "/plugins/discourse-furaffinity-onebox/images/fa-logo.png";
+				imageUrl = "/plugins/discourse-furaffinity-onebox/images/fa_logo.png";
 				if !imageElements.blank?
 					imageUrl = imageElements[0]["content"];
 				end
