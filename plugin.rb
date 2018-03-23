@@ -47,7 +47,7 @@ class Onebox::Engine::TwitchStreamOnebox
 				if !descriptionElements.blank?
 					description = descriptionElements[0]["content"];
 					html.push("<div class=\"fa_description\">")
-					html.push("<p>#{description}</p>");
+					html.push(description);
 					html.push("</div>");
 				end
 			else
