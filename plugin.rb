@@ -18,12 +18,12 @@ class Onebox::Engine::TwitchStreamOnebox
 		html = [];
 		html.push("<div class=\"fa_container\" >");
 		begin
-			twitter = get_twitter;
-			title = twitter["title"];
-			description = twitter["description"];
+			og = get_opengraph;
+			title = og[:title];
+			description = og[:description];
 
 			# Note: The name in this URL has to match the name declared at the top of this file.
-			imageUrl = twitter["image"] || "/plugins/discourse-furaffinity-onebox/images/fa_logo.png";
+			imageUrl = og[:image] || "/plugins/discourse-furaffinity-onebox/images/fa_logo.png";
 
 			# Don't generate an 800px image, generate a smaller one.
 			imageUrl.sub("@800-", "@400-");
@@ -48,7 +48,7 @@ class Onebox::Engine::TwitchStreamOnebox
 				html.push("</div>");
 			end
 
-			if twitter["image"].nil?
+			if og[:image].nil?
 				html.push("<div class=\"fa_nsfw_warning\">");
 				html.push("(The image preview could not be retrieved, most likely because it is adult-only)");
 				html.push("</div>");
