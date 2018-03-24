@@ -32,27 +32,30 @@ class Onebox::Engine::TwitchStreamOnebox
 			# If not, we're not on a FA page we can do anything
 			# useful with and we can just bail.
 			html.push("<a href=\"#{@url}\">");
-			if !title.nil?
+
+			html.push(og);
+
+			#if !title.nil?
 				html.push("<div class=\"fa_title\">");
 				html.push(title);
 				html.push("</div>");
-			end
+			#end
 
 			html.push("<div class=\"fa_image\">")
 			html.push("<img src=\"#{imageUrl}\" />");
 			html.push("</div>");
 
-			if description.nil?
+			#if description.nil?
 				html.push("<div class=\"fa_description\">");
 				html.push(description);
 				html.push("</div>");
-			end
+			#end
 
-			if og[:image].nil?
+			#if og[:image].nil?
 				html.push("<div class=\"fa_nsfw_warning\">");
 				html.push("(The image preview could not be retrieved, most likely because it is adult-only)");
 				html.push("</div>");
-			end
+			#end
 
 			html.push("</a>");
 		rescue StandardError => error
