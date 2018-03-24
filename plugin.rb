@@ -30,7 +30,8 @@ class Onebox::Engine::TwitchStreamOnebox
 			# useful with and we can just bail.
 			if !titleElements.blank?
 				title = titleElements[0]["content"];
-				html.push("<div class=\"fa_title\">")
+				html.push("<a href=\"#{@url}\">");
+				html.push("<div class=\"fa_title\">");
 				html.push(title);
 				html.push("</div>");
 
