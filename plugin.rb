@@ -8,7 +8,7 @@ register_asset "styles.css"
 
 # Onebox for Furaffinity submissions.
 class Onebox::Engine::TwitchStreamOnebox
-	include Onebox::Engine
+	include Onebox::Engine::StandardEmbed
 
 	# Example submission URL is https://www.furaffinity.net/view/10235836/
 	REGEX = /^https?:\/\/(?:www\.)?furaffinity\.net\/view\/([0-9]{4,25})(?:\/)?$/
@@ -18,12 +18,9 @@ class Onebox::Engine::TwitchStreamOnebox
 		html = [];
 		html.push("<div class=\"fa_container\" >");
 		begin
-			doc = Nokogiri::HTML(open(@url));
-			doc.remove_namespaces!;
-
-			titleElements = doc.css("meta[name='twitter:title']");
-			descriptionElements = doc.css("meta[name='twitter:description']");
-			imageElements = doc.css("meta[name='twitter:image']");
+			titleElements = html_doc.css("meta[name='twitter:title']");
+			descriptionElements = html_doc.css("meta[name='twitter:description']");
+			imageElements = html_doc.css("meta[name='twitter:image']");
 
 			# Most pages (even the NSFW blocked ones) will have this.
 			# If not, we're not on a FA page we can do anything
@@ -41,7 +38,9 @@ class Onebox::Engine::TwitchStreamOnebox
 				if !imageElements.blank?
 					# If we have a better URL for the image, it must be SFW. Use it.
 					imageUrl = imageElements[0]["content"];
+					imageUrl.sub("@800-", "@400-");
 				end
+				imageUrl = ::Onebox::Helpers.normalize_url_for_output(imageUrl);
 				html.push("<div class=\"fa_image\">")
 				html.push("<img src=\"#{imageUrl}\" />");
 				html.push("</div>");
