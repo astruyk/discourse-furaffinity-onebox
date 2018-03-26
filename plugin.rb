@@ -50,7 +50,7 @@ class Onebox::Engine::FuraffinitySubmissionOnebox
 		<<-HTML
 			<aside class="onebox whitelistedgeneric">
 				<header class="source">
-					<img src="#{iconUrl}" class="site-icon" width="16" height="16">
+					<img src="#{iconUrl}" class="site-icon" style="width: 16px; height: 16px" >
 					<a href="#{linkUrl}" target="_blank" rel="nofollow noopener">furAffinity.net</a>
 				</header>
 				<article class="onebox-body">
