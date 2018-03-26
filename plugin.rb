@@ -15,13 +15,12 @@ class Onebox::Engine::FuraffinityOnebox
 	REGEX = /^https?:\/\/(?:www\.)?furaffinity\.net\/view\/([0-9]{4,25})(?:\/)?$/
 	matches_regexp REGEX
 
-	private
-		def data
-			{
-				url: @url,
-				name: "Foo",
-				image: "Bar",
-				description: "Test"
-			}
-		end
+	def data
+		{
+			url: @url,
+			name: "Foo",
+			image: "Bar",
+			description: "Test"
+		}
+	end
 end
