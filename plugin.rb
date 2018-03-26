@@ -16,13 +16,14 @@ class Onebox::Engine::FuraffinitySubmissionOnebox
 
 	def to_html
 		linkUrl = @url;
-		title = "TITLE";
-		description = "SOMETHING DESCRIPTION";
+		title = "FurAffinity Submission";
+		description = "";
 		imageUrl = "https://www.furaffinity.net/themes/classic/img/banners/fa_logo.png";
 		iconUrl = "https://www.furaffinity.net/themes/classic/img/favicon.ico";
 
 		begin
-			response = Onebox::Helpers.fetch_response(@url);
+			response = Onebox::Helpers.fetch_response(@url) rescue nil;
+			description = response;
 			doc = Nokogiri::HTML(response);
 			titleElements = doc.css("meta[property='og:title']");
 			if !titleElements.blank?
