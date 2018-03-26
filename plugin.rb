@@ -20,7 +20,6 @@ class Onebox::Engine::FuraffinityOnebox
 		descriptionElements = doc.css("meta[name='twitter:description']");
 		imageElements = doc.css("meta[name='twitter:image']");
 
-		// TODO escape url?
 		linkUrl = @url;
 		title = "TITLE";
 		description = "SOMETHING DESCRIPTION";
