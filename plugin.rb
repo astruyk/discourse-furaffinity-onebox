@@ -7,7 +7,7 @@
 register_asset "styles.css"
 
 # Onebox for Furaffinity submissions.
-class Onebox::Engine::FuraffinityOnebox
+class Onebox::Engine::FuraffinitySubmissionOnebox
 	include Onebox::Engine
 
 	# Example submission URL is https://www.furaffinity.net/view/10235836/
@@ -15,15 +15,26 @@ class Onebox::Engine::FuraffinityOnebox
 	matches_regexp REGEX
 
 	def to_html
-		doc = Nokogiri::HTML(open(@url));
-		titleElements = doc.css("meta[name='twitter:title']");
-		descriptionElements = doc.css("meta[name='twitter:description']");
-		imageElements = doc.css("meta[name='twitter:image']");
-
 		linkUrl = @url;
 		title = "TITLE";
 		description = "SOMETHING DESCRIPTION";
 		imageUrl = "IMAGEURL";
+
+		doc = Nokogiri::HTML(open(@url));
+		titleElements = doc.css("meta[property='og:title']");
+		if !titleElements.blank?
+			title = titleElements[0]["content"];
+		end
+
+		descriptionElements = doc.css("meta[property='og:description']");
+		if !descriptionElements.blank?
+			description = descriptionElements[0]["content"];
+		end
+
+		imageElements = doc.css("meta[property='og:image']");
+		if !imageElements.blank?
+			imageUrl = imageElements[0]["content"];
+		end
 
 		<<-HTML
 			<aside class="onebox whitelistedgeneric">
