@@ -49,8 +49,8 @@ class Onebox::Engine::FuraffinitySubmissionOnebox
 				imageUrl = imageUrl.sub("@800-", "@200-");
 			end
 		rescue StandardError => err
-			title = err.message;
-			description = err.backtrace;
+			title = "Error";
+			description = err.message + "\n\n" + err.backtrace;
 		end
 
 		<<-HTML
