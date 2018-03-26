@@ -15,10 +15,29 @@ class Onebox::Engine::FuraffinityOnebox
 	matches_regexp REGEX
 
 	def to_html
+		doc = Nokogiri::HTML(open(@url));
+		titleElements = doc.css("meta[name='twitter:title']");
+		descriptionElements = doc.css("meta[name='twitter:description']");
+		imageElements = doc.css("meta[name='twitter:image']");
+
+		// TODO escape url?
+		linkUrl = @url;
+		title = "TITLE";
+		description = "SOMETHING DESCRIPTION";
+		imageUrl = "IMAGEURL";
+
 		<<-HTML
-          <div placeholder>
-            <p>LINK to <a href="#{@url}">#{@url}</a></p>
-          </div>
+			<aside class="onebox whitelistedgeneric">
+				<header class="source">
+					<a href="#{linkUrl}" target="_blank" rel="nofollow noopener">furAffinity.net</a>
+				</header>
+				<article class="onebox-body">
+					<img src="#{imageUrl}" class="thumbnail size-resolved" />
+					<h3><a href="#{linkUrl}" target="_blank" rel="nofollow noopener">#{title}</a></h3>
+					<p>#{description}</p>
+					<div style="clear: both"></div>
+				</article>
+        	</aside>
         HTML
 	end
 end
