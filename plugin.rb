@@ -20,20 +20,25 @@ class Onebox::Engine::FuraffinitySubmissionOnebox
 		description = "SOMETHING DESCRIPTION";
 		imageUrl = "IMAGEURL";
 
-		doc = Nokogiri::HTML(open(@url));
-		titleElements = doc.css("meta[property='og:title']");
-		if !titleElements.blank?
-			title = titleElements[0]["content"];
-		end
+		begin
+			doc = Nokogiri::HTML(open(@url));
+			titleElements = doc.css("meta[property='og:title']");
+			if !titleElements.blank?
+				title = titleElements[0]["content"];
+			end
 
-		descriptionElements = doc.css("meta[property='og:description']");
-		if !descriptionElements.blank?
-			description = descriptionElements[0]["content"];
-		end
+			descriptionElements = doc.css("meta[property='og:description']");
+			if !descriptionElements.blank?
+				description = descriptionElements[0]["content"];
+			end
 
-		imageElements = doc.css("meta[property='og:image']");
-		if !imageElements.blank?
-			imageUrl = imageElements[0]["content"];
+			imageElements = doc.css("meta[property='og:image']");
+			if !imageElements.blank?
+				imageUrl = imageElements[0]["content"];
+			end
+		rescue StandardError => err
+			title = err.message;
+			description = err.backtrace;
 		end
 
 		<<-HTML
