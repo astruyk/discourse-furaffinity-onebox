@@ -19,6 +19,7 @@ class Onebox::Engine::FuraffinitySubmissionOnebox
 		title = "TITLE";
 		description = "SOMETHING DESCRIPTION";
 		imageUrl = "https://www.furaffinity.net/themes/classic/img/banners/fa_logo.png";
+		iconUrl = "https://www.furaffinity.net/themes/classic/img/favicon.ico";
 
 		begin
 			doc = Nokogiri::HTML(open(@url));
@@ -32,10 +33,14 @@ class Onebox::Engine::FuraffinitySubmissionOnebox
 				description = descriptionElements[0]["content"];
 			end
 
-			imageElements = doc.css("meta[property='og:image']");
+			# We're using the secure_url here because that is only present for SFW posts.
+			# On NSFW posts the og:image tag is a relative link to the fa_logo.png
+			# which we already have as an absolute URL as the default. If we use the relative
+			# URL here, we'd have to mangle it (append the domain) to get it back to something
+			# we can use in an <img> element.
+			imageElements = doc.css("meta[property='og:image:secure_url']");
 			if !imageElements.blank?
 				imageUrl = imageElements[0]["content"];
-				imageUrl.sub("http://", "https://");
 			end
 		rescue StandardError => err
 			title = err.message;
@@ -45,6 +50,7 @@ class Onebox::Engine::FuraffinitySubmissionOnebox
 		<<-HTML
 			<aside class="onebox whitelistedgeneric">
 				<header class="source">
+					<img src="#{iconUrl}" class="site-icon" width="192" height="192">
 					<a href="#{linkUrl}" target="_blank" rel="nofollow noopener">furAffinity.net</a>
 				</header>
 				<article class="onebox-body">
