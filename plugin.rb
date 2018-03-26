@@ -38,14 +38,13 @@ class Onebox::Engine::FuraffinitySubmissionOnebox
 			# which we already have as an absolute URL as the default. If we use the relative
 			# URL here, we'd have to mangle it (append the domain) to get it back to something
 			# we can use in an <img> element.
-			imageElements = doc.css("meta[property='og:image:secure_url']");
+			imageElements = doc.css("#submissionImg");
 			if !imageElements.blank?
-				imageUrl = imageElements[0]["content"];
-
-				# It looks like FA blocks hotlinks that cause a new image to be generated - so try
-				# linking to the @200 pixel size image instead of the default (@800). That should
-				# pretty much always exist already...
-				imageUrl = imageUrl.sub("@800-", "@200-");
+				# This image should be the thumbnail that would be generated for the preview.
+				# We want to use that because using a non-existing thumbnail size (i.e. the
+				# '@800-' size thumbnail returned by the normal 'og:image' attribute) might not
+				# exist yet and using our agent will trigger the hotlinking protection and error.
+				imageUrl = "https://www.furaffinity.net" + imageElements[0]["data-preview-src"];
 			end
 		rescue StandardError => err
 			title = "Error";
