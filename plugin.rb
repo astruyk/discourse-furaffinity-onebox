@@ -22,7 +22,8 @@ class Onebox::Engine::FuraffinitySubmissionOnebox
 		iconUrl = "https://www.furaffinity.net/themes/classic/img/favicon.ico";
 
 		begin
-			doc = Nokogiri::HTML(open(@url));
+			response = Onebox::Helpers.fetch_response(url) rescue nil;
+			doc = Nokogiri::HTML(html);
 			titleElements = doc.css("meta[property='og:title']");
 			if !titleElements.blank?
 				title = titleElements[0]["content"];
