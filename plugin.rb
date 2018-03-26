@@ -8,6 +8,7 @@ register_asset "styles.css"
 
 # Onebox for Furaffinity submissions.
 class Onebox::Engine::FuraffinityOnebox
+	include Onebox::Engine
 	include Onebox::LayoutSupport
 
 	# Example submission URL is https://www.furaffinity.net/view/10235836/
