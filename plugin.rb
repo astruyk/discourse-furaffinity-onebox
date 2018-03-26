@@ -23,7 +23,7 @@ class Onebox::Engine::FuraffinitySubmissionOnebox
 
 		begin
 			response = Onebox::Helpers.fetch_response(url) rescue nil;
-			doc = Nokogiri::HTML(html);
+			doc = Nokogiri::HTML(response);
 			titleElements = doc.css("meta[property='og:title']");
 			if !titleElements.blank?
 				title = titleElements[0]["content"];
