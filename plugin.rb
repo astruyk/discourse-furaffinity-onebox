@@ -18,7 +18,7 @@ class Onebox::Engine::FuraffinitySubmissionOnebox
 		linkUrl = @url;
 		title = "TITLE";
 		description = "SOMETHING DESCRIPTION";
-		imageUrl = "IMAGEURL";
+		imageUrl = "https://www.furaffinity.net/themes/classic/img/banners/fa_logo.png";
 
 		begin
 			doc = Nokogiri::HTML(open(@url));
@@ -35,6 +35,7 @@ class Onebox::Engine::FuraffinitySubmissionOnebox
 			imageElements = doc.css("meta[property='og:image']");
 			if !imageElements.blank?
 				imageUrl = imageElements[0]["content"];
+				imageUrl.sub("http://", "https://");
 			end
 		rescue StandardError => err
 			title = err.message;
