@@ -45,7 +45,7 @@ class Onebox::Engine::FuraffinitySubmissionOnebox
 				# It looks like FA blocks hotlinks that cause a new image to be generated - so try
 				# linking to the @200 pixel size image instead of the default (@800). That should
 				# pretty much always exist already...
-				imageUrl = imageUrl.rep("@800-", "@200-");
+				imageUrl = imageUrl.sub("@800-", "@200-");
 			end
 		rescue StandardError => err
 			title = err.message;
