@@ -9,7 +9,6 @@ register_asset "styles.css"
 # Onebox for Furaffinity submissions.
 class Onebox::Engine::FuraffinityOnebox
 	include Onebox::LayoutSupport
-	include HTML
 
 	# Example submission URL is https://www.furaffinity.net/view/10235836/
 	REGEX = /^https?:\/\/(?:www\.)?furaffinity\.net\/view\/([0-9]{4,25})(?:\/)?$/
