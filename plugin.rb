@@ -4,8 +4,6 @@
 # authors: Anton Struyk
 # url: https://github.com/astruyk/discourse-furaffinity-onebox
 
-register_asset "styles.css"
-
 # Onebox for Furaffinity submissions.
 class Onebox::Engine::FuraffinitySubmissionOnebox
 	include Onebox::Engine
