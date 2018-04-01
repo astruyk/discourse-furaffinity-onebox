@@ -20,7 +20,8 @@ class Onebox::Engine::FuraffinitySubmissionOnebox
 		iconUrl = "https://www.furaffinity.net/themes/classic/img/favicon.ico";
 
 		begin
-			doc = Nokogiri::HTML(open(@url));
+			pageContents = open(@url, "User-Agent" => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36");
+			doc = Nokogiri::HTML(pageContents);
 			titleElements = doc.css("meta[property='og:title']");
 			if !titleElements.blank?
 				title = titleElements[0]["content"];
@@ -38,6 +39,9 @@ class Onebox::Engine::FuraffinitySubmissionOnebox
 			imageElements = doc.css("#submissionImg");
 			if !imageElements.blank?
 				imageUrl = imageElements[0]["src"];
+
+				# Actually try to open the URL so that the thumbnail will be generated (if it isn't already).
+				imgData = open(imageUrl, "User-agent" => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36");
 			end
 		rescue StandardError => err
 			title = "Error";
