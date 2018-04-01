@@ -38,13 +38,13 @@ class Onebox::Engine::FuraffinitySubmissionOnebox
 			# FA's hotlinking protection causes us to generate 403 errors if we try to
 			# call it with those default values w/o actually visiting the link in a real
 			# browser first. Thanks FA.
-			imageElements = doc.css("meta[property='og:image:secure_url]");
-			mimeType = "";
+			# imageElements = doc.css("meta[property='og:image:secure_url]");
+			mimeType = "img/jpeg";
 			imgBase64 = "";
 			if !imageElements.blank?
 				imageUrl = imageElements[0]["content"];
-				imageUrl = "content"
 				imageUrl = imageUrl.sub("@800-", "@100-");
+				imgBase64 = imageUrl;
 
 				# Actually try to open the URL so that the thumbnail will be generated (if it isn't already).
 				# Use headers ripped from a normal browser session so that it won't trigger the hotlinking errors.
