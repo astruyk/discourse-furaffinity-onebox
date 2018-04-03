@@ -47,13 +47,9 @@ class Onebox::Engine::FuraffinitySubmissionOnebox
 				# This seems like a bug with their hotlinking protection because they actaully
 				# embedd this metadata for tools to use as thumbnails. Lousy.
 				begin
-					imageBase64Data = ::Base64.encode64(
-						open(thumbnailUrl,
-						"User-Agent" => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36",
-						"Referer" => ""
-						) { |io| io.read });
+					response = Onebox::Helpers::fetch_response(thumbnailUrl, nil, nil, {"Referer" => "http://www.furaffinity.net"});
 					imageSrc = thumbnailUrl;
-				rescue StandardError => err
+				rescue Net::HTTPServerException => err
 					# Assuming the error came from reading the data, just use the default FA URL
 					# and surpress the error.
 				end
