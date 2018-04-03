@@ -47,7 +47,11 @@ class Onebox::Engine::FuraffinitySubmissionOnebox
 				# This seems like a bug with their hotlinking protection because they actaully
 				# embedd this metadata for tools to use as thumbnails. Lousy.
 				begin
-					imageBase64Data = ::Base64.encode64(open(thumbnailUrl) { |io| io.read });
+					imageBase64Data = ::Base64.encode64(
+						open(thumbnailUrl,
+						"User-Agent" => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36",
+						"Referer" => ""
+						) { |io| io.read });
 					imageSrc = thumbnailUrl;
 				rescue StandardError => err
 					# Assuming the error came from reading the data, just use the default FA URL
@@ -66,7 +70,7 @@ class Onebox::Engine::FuraffinitySubmissionOnebox
 					<a href="#{linkUrl}" target="_blank" rel="nofollow noopener">furAffinity.net</a>
 				</header>
 				<article class="onebox-body">
-					<img src="#{imageSrc}" class="thumbnail" />
+					<img src="#{imageSrc}" class="thumbnail" referrerpolicy="no-referrer" />
 					<h3><a href="#{linkUrl}" target="_blank" rel="nofollow noopener">#{title}</a></h3>
 					<p>#{description}</p>
 					<div style="clear: both"></div>
