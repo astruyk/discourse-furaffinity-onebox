@@ -14,6 +14,19 @@ class Onebox::Engine::FuraffinitySubmissionOnebox
 	REGEX = /^https?:\/\/(?:www\.)?furaffinity\.net\/view\/([0-9]{4,25})(?:\/)?$/
 	matches_regexp REGEX
 
+	def test_image(url)
+		# Attempt to bypass FA being unpleasent by reading the thumbnail image now.
+		# SOMETIMES this gets it generated before we link it, so that it will show
+		# up. Other times, FA decides not to play nice and doesn't let us hotlink it.
+		response = Onebox::Helpers::fetch_response(url, nil, nil, { "Referer" => Discourse.base_url });
+
+		# This is a hack since I think sometimes FA is serving the page in a way that causes us to
+		# think the read succeeded,  but then we end up linking to the error page anyways in the <img>
+		if response.include? "<head><title>403 Forbidden</title></head>"
+			raise "403 error returned by FA when fetching with referrer '#{Discourse.base_url}''"
+		end
+	end
+
 	def to_html
 		linkUrl = @url;
 		title = "FurAffinity Submission";
@@ -41,21 +54,10 @@ class Onebox::Engine::FuraffinitySubmissionOnebox
 				# more reasonable, since we're not embedding the whole image anyway.
 				thumbnailUrl = imageElements[0]["content"].sub("@800-", "@200-");
 				
-				# Attempt to bypass FA being unpleasent by reading the thumbnail image now.
-				# SOMETIMES this gets it generated before we link it, so that it will show
-				# up. Other times, FA decides not to play nice and doesn't let us hotlink it.
 				begin
-					response = Onebox::Helpers::fetch_response(thumbnailUrl, nil, nil, {"Referer" => "http://www.furaffinity.net" });
-					begin
-						response = Onebox::Helpers::fetch_response(thumbnailUrl, nil, nil, {"Referer" => Discourse.base_url });
-						imageSrc = thumbnailUrl;
-					rescue Net::HTTPServerException => err
-						# FA decided not to let us link this thumbnail. Bleh.
-						# Use the default logo image.
-						err_title = err.message;
-						err_body = err.backtrace.join("\n");
-					end
-				rescue Net::HTTPServerException => err
+					test_image(thumbnailUrl);
+					imageSrc = thumbnailUrl;
+				rescue StandardError => err
 					# FA failed to generate the thumbnail, even for itself.
 					# Use the default logo image.
 					err_title = err.message;
