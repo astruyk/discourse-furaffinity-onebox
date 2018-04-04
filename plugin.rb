@@ -33,8 +33,7 @@ class Onebox::Engine::FuraffinitySubmissionOnebox
 		description = "";
 		imageSrc = "https://www.furaffinity.net/themes/classic/img/banners/fa_logo.png";
 		iconUrl = "https://www.furaffinity.net/themes/classic/img/favicon.ico";
-		err_title = "";
-		err_body = "";
+		error_message = "";
 
 		begin
 			doc = Nokogiri::HTML(open(@url));
@@ -58,10 +57,8 @@ class Onebox::Engine::FuraffinitySubmissionOnebox
 					test_image(thumbnailUrl);
 					imageSrc = thumbnailUrl;
 				rescue StandardError => err
-					# FA failed to generate the thumbnail, even for itself.
-					# Use the default logo image.
-					err_title = err.message;
-					err_body = err.backtrace.join("\n");
+					# FA failed to generate the thumbnail, log the error in hidden section for debugging.
+					error_message = "#{err.class} - #{err.message} \n\n #{err.backtrace.join('\n')}";
 				end
 			end
 		rescue StandardError => err
@@ -79,7 +76,7 @@ class Onebox::Engine::FuraffinitySubmissionOnebox
 					<img src="#{imageSrc}" class="thumbnail" referrerpolicy="no-referrer" />
 					<h3><a href="#{linkUrl}" target="_blank" rel="nofollow noopener">#{title}</a></h3>
 					<p>#{description}</p>
-					<p hidden><h3>#{err_title}</h3><pre>#{err_body}</pre></p>
+					<pre hidden>#{error_message}</pre>
 					<div style="clear: both"></div>
 				</article>
         	</aside>
