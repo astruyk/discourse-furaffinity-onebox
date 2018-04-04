@@ -1,6 +1,6 @@
 # name: discourse-furaffinity-onebox
 # about: Adds support for properly embedding Furaffinity submissions as OneBox items in Discourse
-# version: 1.0
+# version: 1.2
 # authors: Anton Struyk
 # url: https://github.com/astruyk/discourse-furaffinity-onebox
 
@@ -20,6 +20,8 @@ class Onebox::Engine::FuraffinitySubmissionOnebox
 		description = "";
 		imageSrc = "https://www.furaffinity.net/themes/classic/img/banners/fa_logo.png";
 		iconUrl = "https://www.furaffinity.net/themes/classic/img/favicon.ico";
+		err_title = "";
+		err_body = "";
 
 		begin
 			doc = Nokogiri::HTML(open(@url));
@@ -38,20 +40,26 @@ class Onebox::Engine::FuraffinitySubmissionOnebox
 				# Try to down-size the default thumbnail size (800px) to something
 				# more reasonable, since we're not embedding the whole image anyway.
 				thumbnailUrl = imageElements[0]["content"].sub("@800-", "@200-");
-
-				# Read the data from the URL. This prevents images that haven't been visited
-				# in a long time from showing up as broken links. FA is doing some kind of crazy
-				# server-side caching for thumbnails and not generating them when requested by
-				# an <img /> element (returning 407 errors instead), it works if someone
-				# visits the URL and pulls the actual image data though... 
-				# This seems like a bug with their hotlinking protection because they actaully
-				# embedd this metadata for tools to use as thumbnails. Lousy.
+				
+				# Attempt to bypass FA being unpleasent by reading the thumbnail image now.
+				# SOMETIMES this gets it generated before we link it, so that it will show
+				# up. Other times, FA decides not to play nice and doesn't let us hotlink it.
 				begin
-					response = Onebox::Helpers::fetch_response(thumbnailUrl, nil, nil, {"Referer" => "http://www.furaffinity.net"});
-					imageSrc = thumbnailUrl;
+					response = Onebox::Helpers::fetch_response(thumbnailUrl, nil, nil, {"Referer" => "http://www.furaffinity.net" });
+					begin
+						response = Onebox::Helpers::fetch_response(thumbnailUrl, nil, nil, {"Referer" => Discourse.base_url });
+						imageSrc = thumbnailUrl;
+					rescue Net::HTTPServerException => err
+						# FA decided not to let us link this thumbnail. Bleh.
+						# Use the default logo image.
+						err_title = err.message;
+						err_body = err.backtrace.join("\n");
+					end
 				rescue Net::HTTPServerException => err
-					# Assuming the error came from reading the data, just use the default FA URL
-					# and surpress the error.
+					# FA failed to generate the thumbnail, even for itself.
+					# Use the default logo image.
+					err_title = err.message;
+					err_body = err.backtrace.join("\n");
 				end
 			end
 		rescue StandardError => err
@@ -69,6 +77,7 @@ class Onebox::Engine::FuraffinitySubmissionOnebox
 					<img src="#{imageSrc}" class="thumbnail" referrerpolicy="no-referrer" />
 					<h3><a href="#{linkUrl}" target="_blank" rel="nofollow noopener">#{title}</a></h3>
 					<p>#{description}</p>
+					<p hidden><h3>#{err_title}</h3><pre>#{err_body}</pre></p>
 					<div style="clear: both"></div>
 				</article>
         	</aside>
